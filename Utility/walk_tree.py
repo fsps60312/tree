@@ -1,7 +1,6 @@
 from typing import List
 import os
 import re
-import time
 
 
 def dfs_print(root_path: str, regex_pattern: str, ignore_pattern: str, *,

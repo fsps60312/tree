@@ -6,7 +6,7 @@ import sys
 if __name__ == '__main__':
     print('sys.argv = %s' % sys.argv, file=sys.stderr)
     sys_args, sys_flags, sys_options = sys_argv_parse(
-        sys.argv[1:], mapping = {'P': 'pattern', 'I': 'ignore'})
+        sys.argv[1:], mapping={'P': 'pattern', 'I': 'ignore'})
 
     if not (len(sys_args) <= 1 and
             all(k in set() for k in sys_flags) and
@@ -22,7 +22,7 @@ if __name__ == '__main__':
               file=sys.stderr)
         os._exit(0)
 
-    root_path = sys_args[0] if len(sys_args) >= 1 else ''
+    root_path = sys_args[0] if len(sys_args) >= 1 else '.'
     regex_pattern = sys_options.get('pattern', '.*')
     ignore_pattern = sys_options.get('ignore', '(?!.*)')
     print('root_path:', repr(root_path), file=sys.stderr)
