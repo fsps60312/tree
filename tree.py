@@ -1,7 +1,9 @@
 from Utility.parse.sys_argv import parse as sys_argv_parse
-from Utility.walk_tree import walk_and_print_tree
+# from Utility.walk_tree import walk_and_print_tree
+from Utility.format_tree import TreeFormatter
 import os
 import sys
+import re
 
 if __name__ == '__main__':
     print('sys.argv = %s' % sys.argv, file=sys.stderr)
@@ -28,4 +30,14 @@ if __name__ == '__main__':
     print('root_path:', repr(root_path), file=sys.stderr)
     print('regex_pattern:', repr(regex_pattern), file=sys.stderr)
     print('ignore_pattern:', repr(ignore_pattern), file=sys.stderr)
-    walk_and_print_tree(root_path, regex_pattern, ignore_pattern)
+
+    for line in TreeFormatter(
+            get_name=lambda v: v.name,
+            get_iter=lambda _, v: os.scandir(v.path),
+            walk_cond=lambda _, v: v.is_dir(follow_symlinks=False),
+            print_cond=lambda _, v: (
+                re.fullmatch(ignore_pattern, v.path) is None and
+                re.fullmatch(regex_pattern, v.path) is not None),
+            print_empty=False).walk_from_name(
+                root_path, os.scandir(root_path)):
+        print(line)
