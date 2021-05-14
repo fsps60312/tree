@@ -114,7 +114,8 @@ class TreeFormatter(Generic[T]):
 
     def walk_from_obj(self, root_obj: T, *, directly_call=True) \
             -> Generator[str, None, bool]:
-        yield (Ansi.bold if self.colorful else lambda v: v)(
+        yield ((lambda v: Ansi.bold(Ansi.dircolor(v)))
+               if self.colorful else lambda v: v)(
             self.get_name(root_obj))
         dfs_stk = Stack(
             StackEnv(self.get_iter, self.get_name,
